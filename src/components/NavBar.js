@@ -25,6 +25,7 @@ function NavBar() {
 
   const handleLogOut = async () => {
     dispatch(logOut());
+    window.localStorage.clear()
   };
 
   return (

@@ -6,13 +6,22 @@ export const addItemsTodatabase = createAsyncThunk(
   "addItemsHandle/addItemsTodatabase",
   async (items) => {
     // console.log(items.title, items.comment);
+    // console.log(items.userEmail);
     try {
-      const dateNow = Date(Date.now().toString());
+      const dateNow = Date();
       const docRef = doc(db, items.userEmail, dateNow);
       await setDoc(docRef, {
         title: items.title,
         comment: items.comment,
       });
+      window.localStorage.setItem(
+        dateNow.toString(),
+        JSON.stringify({
+          id:  dateNow.toString(),
+          title: items.title,
+          comment: items.comment,
+        })
+      );
       // console.log(refId.id)
       return "Success";
     } catch (error) {

@@ -11,7 +11,7 @@ import {
 } from "../app/addItemsHandle";
 import { useDispatch } from "react-redux";
 import ShowItems from "./ShowItems";
-import { getAllItems } from "../app/showItemsHandle";
+import { getAllItemsFromLocalStorage } from "../app/showItemsHandle";
 
 function UserAccount() {
   const dispatch = useDispatch();
@@ -22,10 +22,11 @@ function UserAccount() {
   const comment = useSelector((state) => state.addItemsHandle.comment);
   const userEmail = useSelector((state) => state.loginHandle.userEmail);
 
+ 
   useEffect(() => {
-    dispatch(getAllItems(userEmail));
-  }, []);
-
+    dispatch(getAllItemsFromLocalStorage());
+  }, [])
+  
   const handleItemAddToDatabase = () => {
     title === ""
       ? dispatch(titleErrorHandle("red"))
@@ -35,7 +36,6 @@ function UserAccount() {
       : dispatch(commentErrorHandle("green"));
     if (title !== "" && comment !== "") {
       dispatch(addItemsTodatabase({ title, comment, userEmail }));
-      dispatch(getAllItems(userEmail));
     }
   };
 

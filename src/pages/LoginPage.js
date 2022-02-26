@@ -27,7 +27,7 @@ function LoginPage() {
   const handleSignIn = async () => {
     if (
       email !== "" &&
-      password !== "" &&
+      password !== "" &&  
       validator.isEmail(email) &&
       validator.isStrongPassword(password)
     ) {

@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ToDoItems from "./ToDoItems";
-import { deleteItem, getAllItems } from "../app/showItemsHandle";
+import {
+  deleteItem,
+  getAllItemsFromDatabase,
+  getAllItemsFromLocalStorage,
+} from "../app/showItemsHandle";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import Spinner from "./Spinner";
@@ -10,14 +14,22 @@ function ShowItems() {
   const alldata = useSelector((state) => state.showItemsHandle.data);
   const userEmail = useSelector((state) => state.loginHandle.userEmail);
 
+
+  useEffect(() => {
+    setTimeout(() => {
+      dispatch(getAllItemsFromLocalStorage());
+    }, 100);
+    
+  }, [alldata])
+  
+
   const handlegetDocument = () => {
-    dispatch(getAllItems(userEmail));
+    dispatch(getAllItemsFromDatabase(userEmail));
   };
 
   const deleteItemHandle = (e) => {
     let id = e.id;
-    dispatch(deleteItem({userEmail,id}));
-    dispatch(getAllItems(userEmail))
+    dispatch(deleteItem({ userEmail, id }));
   };
 
   return (
@@ -42,7 +54,7 @@ function ShowItems() {
                 title={e.title}
                 comment={e.comment}
                 date={e.id}
-                deleteItem={()=>deleteItemHandle(e)}
+                deleteItem={() => deleteItemHandle(e)}
               />
             </div>
           );

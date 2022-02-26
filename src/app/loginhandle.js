@@ -17,6 +17,7 @@ export const loginAuthentication = createAsyncThunk(
           // console.log("Firebase error ", e);
           return e;
         });
+      window.localStorage.clear()
       return res;
     } catch (e) {
       // console.log("Response error ", e);
