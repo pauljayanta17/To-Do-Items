@@ -43,7 +43,6 @@ function LoginPage() {
   };
 
   const togglePasswordHandle = () => {
-    // console.log(isShowPassword);
     if (isShowPassword) {
       dispatch(togglePassword(!isShowPassword));
     } else {

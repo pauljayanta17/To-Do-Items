@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { authApp } from "../utils/Firebase-Config";
+
+//Create new account
 export const signUpAuth = createAsyncThunk("signinHandle/auth", async (e) => {
   let msg;
   try {
@@ -67,9 +69,11 @@ const signupHandle = createSlice({
       })
       .addCase(signUpAuth.fulfilled, (state, action) => {
         state.loading = false;
+        //if email is already used then show error
         if (action.payload === "auth/email-already-in-use") {
           state.errorMsg = "Email is already in use";
         }
+        //otherwise create account
         if (action.payload === "user created") {
           state.signUp = true;
           state.cnfpassword = "";

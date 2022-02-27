@@ -8,6 +8,7 @@ export const loginAuthentication = createAsyncThunk(
   async (e) => {
     let res;
     try {
+      //Signin to user account
       await signInWithEmailAndPassword(authApp, e.email, e.password)
         .then((response) => {
           // console.log(response.user.uid);
@@ -82,7 +83,6 @@ const loginHandle = createSlice({
         state.loading = false;
         state.signin = action.payload ? true : false;
         state.errorMsg = !state.signin && "Login Failed";
-        // console.log(state.email)
       })
       .addCase(loginAuthentication.rejected, (state, action) => {
         state.loading = false;

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import ToDoItems from "./ToDoItems";
-// import i from '../components/Icons/kindpng_815995.png'
 import {
   deleteItem,
   deleteAllItem,
@@ -17,6 +16,7 @@ function ShowItems() {
   const userEmail = useSelector((state) => state.loginHandle.userEmail);
 
   useEffect(() => {
+    
     const intervalID = setInterval(() => {
       let dateTime = Date();
       // let update = dateTime.slice(16,24);
@@ -52,7 +52,8 @@ function ShowItems() {
             })
           );
           new Notification(element.title, {
-            body: "Complete task",
+            body: element.comment,
+            tag:"Complete",
             icon: "https://cdn4.iconfinder.com/data/icons/generic-interaction/143/yes-tick-success-done-complete-check-allow-512.png",
           });
         }
@@ -84,13 +85,14 @@ function ShowItems() {
       <div className="container text-light my-3 d-flex justify-content-between">
         <h4>Your Items </h4>
         <div>
+          {/* Refresh button Here */}
           <button
             className="btn btn-dark text-light mx-1"
             onClick={handlegetDocument}
           >
             {refreshLoading ? "Please Wait" : "Refresh"}
           </button>
-
+    {/* Delete all button here */}
           <button
             className="btn btn-danger text-light"
             onClick={deletAllDocument}
@@ -99,6 +101,7 @@ function ShowItems() {
           </button>
         </div>
       </div>
+      {/* When data is not available then show this componenet */}
       {alldata.length === 0 && (
         <div className="conatiner fs-5 text-center text-danger">
           <b>
@@ -106,11 +109,13 @@ function ShowItems() {
           </b>
         </div>
       )}
+      {/* When data is loading the spinner is show here */}
       {refreshLoading && (
         <div className="container text-center">
           <Spinner />
         </div>
       )}
+      {/* Here is the list of all data with list view */}
       {alldata &&
         alldata.map((e) => {
           return (

@@ -26,7 +26,7 @@ function SignUpPage() {
   const cnfpassword = useSelector((state) => state.signupHandle.cnfpassword);
   const signUpstate = useSelector((state) => state.signupHandle.signUp);
   const loading = useSelector((state) => state.signupHandle.loading);
-  const errorMessage = useSelector((state) => state.signupHandle.errorMsg);
+  // const errorMessage = useSelector((state) => state.signupHandle.errorMsg);
 
   let text_color = "white";
 

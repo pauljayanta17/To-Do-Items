@@ -13,7 +13,6 @@ import {
 } from "../app/addItemsHandle";
 import { useDispatch } from "react-redux";
 import ShowItems from "./ShowItems";
-// import { getAllItemsFromLocalStorage } from "../app/showItemsHandle";
 
 function UserAccount() {
   const dispatch = useDispatch();
@@ -26,6 +25,7 @@ function UserAccount() {
   const setdate = useSelector((state) => state.addItemsHandle.date);
   const settime = useSelector((state) => state.addItemsHandle.time);
 
+  //After click on Save button this function will run
   const handleItemAddToDatabase = () => {
     title === ""
       ? dispatch(titleErrorHandle("red"))
@@ -81,6 +81,7 @@ function UserAccount() {
   return (
     <>
       {renderRedirect()}
+      {/* call add items componenet */}
       <Additems
         loading={loading}
         title={title}

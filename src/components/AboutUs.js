@@ -26,7 +26,12 @@ export default function AboutUs() {
             <p className="card-text">
               <b>Developed By</b>{" "}
               <h3 className="text-primary" style={{ fontFamily: "serif" }}>
-                <a href="https://github.com/pauljayanta17" target="_blank" rel="noreferrer" class="link-primary">
+                <a
+                  href="https://github.com/pauljayanta17"
+                  target="_blank"
+                  rel="noreferrer"
+                  class="link-primary"
+                >
                   Cool Coder
                 </a>
               </h3>

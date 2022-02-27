@@ -9,15 +9,16 @@ function Additems(props) {
   const dateError = useSelector((state) => state.addItemsHandle.dateError);
   const date = useSelector((state) => state.addItemsHandle.date);
   const time = useSelector((state) => state.addItemsHandle.time);
-  // console.log("dateError" ,dateError)
 
   return (
     <>
       <form>
         <div className="container my-2 d-flex flex-column align-items-start">
+          {/* Title Label Here */}
           <label htmlFor="titleid" className="form-label text-light fs-5">
             Title
           </label>
+          {/* Input field for title */}
           <div className="col-auto">
             <input
               type="text"
@@ -34,22 +35,22 @@ function Additems(props) {
           </div>
         </div>
         <div className="container my-2 d-flex flex-column align-items-start">
+          {/* Set reminder  */}
           <label htmlFor="titleid" className="form-label text-light fs-5">
             Set Reminder
           </label>
+          {/* Pick up date and time field */}
           <div className="col-auto">
             <input
               type="datetime-local"
               id="setreminder"
               style={{ border: `2px solid ${dateError}` }}
               onChange={props.handleDateChanged}
-              // placeholder="yyyy-MM-ddThh:mm"
-              // value="yyyy-MM-ddThh:mm"
               value={`${date}T${time}`}
-              // min={props.setMinimun}
             />
           </div>
         </div>
+        {/* Define Comment field here */}
         <div className="container">
           <div className="input-group">
             <div className="col-6">
@@ -66,6 +67,7 @@ function Additems(props) {
             </div>
           </div>
         </div>
+        {/* Define Button and click on this button the add the items*/}
         <div className="container my-2 d-flex justify-content-start">
           <button
             type="button"

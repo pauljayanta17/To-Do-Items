@@ -2,16 +2,16 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db } from "../utils/Firebase-Config";
 
+//Get all items from database
 export const getAllItemsFromDatabase = createAsyncThunk(
   "showItemsHandle/getAllItems",
   async (email) => {
-    // console.log("in showitems", email);
-    // code here
     try {
       let arr = [];
       window.localStorage.clear();
+      //Get items and store in querySnapshot
       const querySnapshot = await getDocs(collection(db, email));
-      // console.log(typeof querySnapshot);
+      //store each items from querySnapshot to array
       querySnapshot.forEach((data) => {
         arr.push({
           id: data.id,
@@ -20,6 +20,7 @@ export const getAllItemsFromDatabase = createAsyncThunk(
           date:data.data().date,
           time:data.data().time
         });
+        //same thing for localStorage
         window.localStorage.setItem(
           data.id,
           JSON.stringify({
@@ -51,6 +52,7 @@ export const deleteItem = createAsyncThunk(
   }
 );
 
+//Delete all items from database
 export const deleteAllItem = createAsyncThunk(
   "showItemsHandle/deleteAllItem",
   async (emailid) => {
@@ -59,12 +61,9 @@ export const deleteAllItem = createAsyncThunk(
       var length = window.localStorage.length;
       let arr=[];
       for (let i = 0; i < length; i++) {
-        // console.log(window.localStorage.getItem(window.localStorage.key(i)));
-        // console.log(JSON.parse(window.localStorage.getItem(localStorage.key(i))))
         arr.push(
           JSON.parse(window.localStorage.getItem(window.localStorage.key(i)))
         );
-        // console.log(state.data)
       }
       arr.map(async(e)=>{
       await deleteDoc(doc(db,emailid,e.id));
@@ -85,24 +84,22 @@ const showItemsHandle = createSlice({
   name: "showItemsHandle",
   initialState,
   reducers: {
+    //useless function
     updateItems: (state, action) => {
-      // let index = state.data.indexOf(action.payload.item)
       if (action.payload.operation === "add") {
       } else if (action.payload.operation === "del") {
       }
     },
+    //get all items from localStorage and update 'data' variable
     getAllItemsFromLocalStorage: (state, action) => {
       state.loading = true;
       state.data = [];
       let arr = [];
       var length = window.localStorage.length;
       for (let i = 0; i < length; i++) {
-        // console.log(window.localStorage.getItem(window.localStorage.key(i)));
-        // console.log(JSON.parse(window.localStorage.getItem(localStorage.key(i))))
         arr.push(
           JSON.parse(window.localStorage.getItem(window.localStorage.key(i)))
         );
-        // console.log(state.data)
       }
       state.data = arr;
       state.loading = false;
