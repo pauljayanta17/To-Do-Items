@@ -17,6 +17,8 @@ export const getAllItemsFromDatabase = createAsyncThunk(
           id: data.id,
           title: data.data().title,
           comment: data.data().comment,
+          date:data.data().date,
+          time:data.data().time
         });
         window.localStorage.setItem(
           data.id,
@@ -24,6 +26,8 @@ export const getAllItemsFromDatabase = createAsyncThunk(
             id: data.id,
             title: data.data().title,
             comment: data.data().comment,
+            date:data.data().date,
+            time:data.data().time
           })
         );
       });
@@ -47,6 +51,31 @@ export const deleteItem = createAsyncThunk(
   }
 );
 
+export const deleteAllItem = createAsyncThunk(
+  "showItemsHandle/deleteAllItem",
+  async (emailid) => {
+    // code here
+    try {
+      var length = window.localStorage.length;
+      let arr=[];
+      for (let i = 0; i < length; i++) {
+        // console.log(window.localStorage.getItem(window.localStorage.key(i)));
+        // console.log(JSON.parse(window.localStorage.getItem(localStorage.key(i))))
+        arr.push(
+          JSON.parse(window.localStorage.getItem(window.localStorage.key(i)))
+        );
+        // console.log(state.data)
+      }
+      arr.map(async(e)=>{
+      await deleteDoc(doc(db,emailid,e.id));
+      })
+      window.localStorage.clear();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+);
+
 const initialState = {
   data: [],
   loading: false,
@@ -65,7 +94,7 @@ const showItemsHandle = createSlice({
     getAllItemsFromLocalStorage: (state, action) => {
       state.loading = true;
       state.data = [];
-      let arr=[];
+      let arr = [];
       var length = window.localStorage.length;
       for (let i = 0; i < length; i++) {
         // console.log(window.localStorage.getItem(window.localStorage.key(i)));
@@ -75,7 +104,7 @@ const showItemsHandle = createSlice({
         );
         // console.log(state.data)
       }
-      state.data = arr
+      state.data = arr;
       state.loading = false;
     },
   },
@@ -96,7 +125,15 @@ const showItemsHandle = createSlice({
       })
       .addCase(deleteItem.fulfilled, (state, action) => {
         state.loading = false;
-      });
+      })
+      .addCase(deleteAllItem.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(deleteAllItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data=[]
+      })
+
   },
 });
 

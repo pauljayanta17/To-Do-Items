@@ -1,17 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Additems from "./Additems";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import {
   addTitle,
   addComment,
+  addDateTime,
   titleErrorHandle,
   commentErrorHandle,
   addItemsTodatabase,
+  dateErrorHandle,
 } from "../app/addItemsHandle";
 import { useDispatch } from "react-redux";
 import ShowItems from "./ShowItems";
-import { getAllItemsFromLocalStorage } from "../app/showItemsHandle";
+// import { getAllItemsFromLocalStorage } from "../app/showItemsHandle";
 
 function UserAccount() {
   const dispatch = useDispatch();
@@ -21,12 +23,9 @@ function UserAccount() {
   const title = useSelector((state) => state.addItemsHandle.title);
   const comment = useSelector((state) => state.addItemsHandle.comment);
   const userEmail = useSelector((state) => state.loginHandle.userEmail);
+  const setdate = useSelector((state) => state.addItemsHandle.date);
+  const settime = useSelector((state) => state.addItemsHandle.time);
 
- 
-  useEffect(() => {
-    dispatch(getAllItemsFromLocalStorage());
-  }, [])
-  
   const handleItemAddToDatabase = () => {
     title === ""
       ? dispatch(titleErrorHandle("red"))
@@ -34,9 +33,35 @@ function UserAccount() {
     comment === ""
       ? dispatch(commentErrorHandle("red"))
       : dispatch(commentErrorHandle("green"));
-    if (title !== "" && comment !== "") {
-      dispatch(addItemsTodatabase({ title, comment, userEmail }));
+    settime !== "hh:mm" && setdate !== "yyyy-MM-dd"
+      ? dispatch(dateErrorHandle("green"))
+      : dispatch(dateErrorHandle("red"));
+    if (
+      title !== "" &&
+      comment !== "" &&
+      settime !== "hh:mm" &&
+      setdate !== "yyyy-MM-dd"
+    ) {
+      // console.log(date)
+      dispatch(
+        addItemsTodatabase({ title, comment, userEmail, setdate, settime })
+      );
     }
+  };
+
+  const handleDateChanged = (e) => {
+    // console.log(e.target.value)
+    const temp = e.target.value;
+    const date = temp.slice(0, 10);
+    let time = temp.slice(11, 16) + ":00";
+    dispatch(addDateTime({ date, time }));
+    // console.log(temp.slice(0,10))
+    // console.log(temp.slice(11,16))
+    // if (settime !== "hh:mm" && setdate !== "yyyy-MM-dd") {
+    //   dispatch(dateErrorHandle("green"));
+    // } else {
+    //   dispatch(dateErrorHandle("red"));
+    // }
   };
 
   const onTitleChange = (event) => {
@@ -64,6 +89,7 @@ function UserAccount() {
         onContentChange={onContentChange}
         handleItemAddToDatabase={handleItemAddToDatabase}
         btnTitle="Save"
+        handleDateChanged={handleDateChanged}
       />
       <ShowItems />
     </>

@@ -9,6 +9,7 @@ import AboutUs from './components/AboutUs'
 import ContactUs from "./components/ContactUs";
 function App() {
   
+  
   // const getDataFirebase = async () => {
   //   const querySnapshot = await getDocs(collection(db, "users"));
   //   querySnapshot.forEach((doc) => {

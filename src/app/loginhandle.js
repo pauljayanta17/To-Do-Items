@@ -11,31 +11,33 @@ export const loginAuthentication = createAsyncThunk(
       await signInWithEmailAndPassword(authApp, e.email, e.password)
         .then((response) => {
           // console.log(response.user.uid);
+          // window.localStorage.setItem("Login",true)
+          if ("Notification" in window) {
+            Notification.requestPermission();
+          }
           res = response.user.uid;
         })
         .catch((e) => {
           // console.log("Firebase error ", e);
-          return e;
+          return e.code;
         });
-      window.localStorage.clear()
+      window.localStorage.clear();
       return res;
     } catch (e) {
+      return e.code;
       // console.log("Response error ", e);
     }
   }
 );
 
-
-export const logOut = createAsyncThunk(
-  'loginHandle/logOut',async()=>{
-   try {
-    const res = await signOut(authApp)
+export const logOut = createAsyncThunk("loginHandle/logOut", async () => {
+  try {
+    const res = await signOut(authApp);
     return res;
-   } catch (error) {
+  } catch (error) {
     //  console.log(error)
-   }
   }
-)
+});
 
 const initialState = {
   email: "",
@@ -43,8 +45,8 @@ const initialState = {
   loading: false,
   errorMsg: "",
   signin: false,
-  showPassword:false,
-  userEmail:""
+  showPassword: false,
+  userEmail: "",
 };
 
 const loginHandle = createSlice({
@@ -61,11 +63,14 @@ const loginHandle = createSlice({
     login: (state, action) => {
       state.signin = action.payload;
     },
-    togglePassword:(state,action)=>{
+    togglePassword: (state, action) => {
       state.showPassword = action.payload;
     },
-    setUserEmail:(state,action)=>{
-      state.userEmail = action.payload
+    setUserEmail: (state, action) => {
+      state.userEmail = action.payload;
+    },
+    loginError:(state,action)=>{
+      state.errorMsg = action.payload
     }
   },
   extraReducers(builder) {
@@ -76,22 +81,30 @@ const loginHandle = createSlice({
       .addCase(loginAuthentication.fulfilled, (state, action) => {
         state.loading = false;
         state.signin = action.payload ? true : false;
-        // console.log("reducers ", state.signin);
+        state.errorMsg = !state.signin && "Login Failed";
+        // console.log(state.email)
       })
       .addCase(loginAuthentication.rejected, (state, action) => {
         state.loading = false;
         state.signin = false;
         state.errorMsg = "Login Failed";
       })
-      .addCase(logOut.pending,(state,action)=>{
+      .addCase(logOut.pending, (state, action) => {
         state.loading = true;
       })
-      .addCase(logOut.fulfilled,(state,action)=>{
-        state.loading=false;
-      })
+      .addCase(logOut.fulfilled, (state, action) => {
+        state.loading = false;
+      });
   },
 });
 
-export const { emailStore, passwordStore, login,togglePassword,setUserEmail} = loginHandle.actions;
+export const {
+  emailStore,
+  passwordStore,
+  login,
+  togglePassword,
+  setUserEmail,
+  loginError
+} = loginHandle.actions;
 
 export default loginHandle.reducer;

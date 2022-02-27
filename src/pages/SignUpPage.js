@@ -101,9 +101,13 @@ function SignUpPage() {
               </label>
             </div>
             <div className="col-12 input-group">
-              <span className="input-group-text" id="basic-addon1"  style={{
+              <span
+                className="input-group-text"
+                id="basic-addon1"
+                style={{
                   border: `2px solid ${fullname === "" ? "red" : "green"}`,
-                }}>
+                }}
+              >
                 <PersonIcon></PersonIcon>
               </span>
               <input
@@ -112,7 +116,6 @@ function SignUpPage() {
                 id="firstnameid"
                 placeholder="Full Name"
                 value={fullname}
-               
                 onChange={onFullNamechanged}
                 required
               />
@@ -130,11 +133,15 @@ function SignUpPage() {
               </label>
             </div>
             <div className="col-12 input-group">
-              <span className="input-group-text" id="basic-addon1"  style={{
+              <span
+                className="input-group-text"
+                id="basic-addon1"
+                style={{
                   border: `2px solid ${
                     mobileno.length === 10 ? "green" : "red"
                   }`,
-                }}>
+                }}
+              >
                 <MobileIcon></MobileIcon>
               </span>
               <input
@@ -143,7 +150,6 @@ function SignUpPage() {
                 id="mobileno"
                 placeholder="Phone Number"
                 value={mobileno}
-               
                 onChange={onMobilenoNamechanged}
                 required
               />
@@ -195,9 +201,15 @@ function SignUpPage() {
               </label>
             </div>
             <div className="col-12 input-group">
-              <span className="input-group-text" id="basic-addon1"  style={{
-                  border: `2px solid ${validator.isStrongPassword(password) ? "green" : "red"}`,
-                }}>
+              <span
+                className="input-group-text"
+                id="basic-addon1"
+                style={{
+                  border: `2px solid ${
+                    validator.isStrongPassword(password) ? "green" : "red"
+                  }`,
+                }}
+              >
                 <PasswordKeyIcon></PasswordKeyIcon>
               </span>
               <input
@@ -223,9 +235,15 @@ function SignUpPage() {
               </label>
             </div>
             <div className="col-12 input-group">
-              <span className="input-group-text" id="basic-addon1"  style={{
-                  border: `2px solid ${validator.isStrongPassword(cnfpassword) ? "green" : "red"}`,
-                }}>
+              <span
+                className="input-group-text"
+                id="basic-addon1"
+                style={{
+                  border: `2px solid ${
+                    validator.isStrongPassword(cnfpassword) ? "green" : "red"
+                  }`,
+                }}
+              >
                 <PasswordKeyIcon></PasswordKeyIcon>
               </span>
               <input

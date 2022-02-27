@@ -14,6 +14,7 @@ import {
   passwordStore,
   loginAuthentication,
   togglePassword,
+  loginError
 } from "../app/loginhandle";
 import { useSelector } from "react-redux";
 function LoginPage() {
@@ -24,6 +25,7 @@ function LoginPage() {
   const signin = useSelector((state) => state.loginHandle.signin);
   const loading = useSelector((state) => state.loginHandle.loading);
   const isShowPassword = useSelector((state) => state.loginHandle.showPassword);
+
   const handleSignIn = async () => {
     if (
       email !== "" &&
@@ -34,6 +36,9 @@ function LoginPage() {
       dispatch(loginAuthentication({ email, password }));
       dispatch(emailStore(""));
       dispatch(passwordStore(""));
+    }
+    else{
+      dispatch(loginError("Something went wrong"))
     }
   };
 
@@ -62,7 +67,7 @@ function LoginPage() {
   return (
     <div className="d-flex justify-content-center">
       {renderRedirect()}
-      <div className="card text-white bg-dark mb-3 text-center pb-4 px-4 mt-3">
+      <div className="card text-white bg-dark bg-gradient mb-3 text-center pb-4 px-4 mt-3 mx-2">
         <h4 className="my-3">Login To Account</h4>
         <div className="row align-items-center">
           <div className="col-auto">
@@ -128,6 +133,8 @@ function LoginPage() {
             Login
           </button>
         )}
+
+       
         <Link to="/forgotpassword" className="link-success my-2">
           <label htmlFor="forgotpassword" style={{ cursor: "pointer" }}>
             <strong>Forgot Password ?</strong>
@@ -139,7 +146,7 @@ function LoginPage() {
           <GoogleSigninSVGIcons></GoogleSigninSVGIcons>
         </Link>
 
-        <h6 className="text-danger text-center">{errorMsg}</h6>
+        <h6 className="conatiner text-danger text-center" style={{height:"1rem"}}>{errorMsg}</h6>
         {/* </div> */}
       </div>
     </div>
