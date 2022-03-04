@@ -13,17 +13,30 @@ import {
 } from "../app/addItemsHandle";
 import { useDispatch } from "react-redux";
 import ShowItems from "./ShowItems";
+// import { authApp } from "../utils/Firebase-Config";
+// import { checkEmailVerified } from "../app/loginhandle";
+import EmailVerification from "../pages/EmailVerification";
 
 function UserAccount() {
   const dispatch = useDispatch();
   //Load state for login and addItems Reducers
   const signin = useSelector((state) => state.loginHandle.signin);
+  const userEmail = useSelector((state) => state.loginHandle.userEmail);
+  const emailVerified = useSelector((state) => state.loginHandle.emailVerified);
   const loading = useSelector((state) => state.addItemsHandle.loading);
   const title = useSelector((state) => state.addItemsHandle.title);
   const comment = useSelector((state) => state.addItemsHandle.comment);
-  const userEmail = useSelector((state) => state.loginHandle.userEmail);
   const setdate = useSelector((state) => state.addItemsHandle.date);
   const settime = useSelector((state) => state.addItemsHandle.time);
+
+  // useEffect(() => {
+  //   const intervalID = setInterval(() => {
+  //     dispatch(checkEmailVerified(authApp.currentUser.emailVerified));
+  //   }, 1000);
+  //   return () => {
+  //     clearInterval(intervalID);
+  //   };
+  // }, [authApp]);
 
   //After click on Save button this function will run
   const handleItemAddToDatabase = () => {
@@ -81,18 +94,27 @@ function UserAccount() {
   return (
     <>
       {renderRedirect()}
-      {/* call add items componenet */}
-      <Additems
-        loading={loading}
-        title={title}
-        onTitleChange={onTitleChange}
-        content={comment}
-        onContentChange={onContentChange}
-        handleItemAddToDatabase={handleItemAddToDatabase}
-        btnTitle="Save"
-        handleDateChanged={handleDateChanged}
-      />
-      <ShowItems />
+      {emailVerified ? (
+        <>
+          {" "}
+          <Additems
+            loading={loading}
+            title={title}
+            onTitleChange={onTitleChange}
+            content={comment}
+            onContentChange={onContentChange}
+            handleItemAddToDatabase={handleItemAddToDatabase}
+            btnTitle="Save"
+            handleDateChanged={handleDateChanged}
+          />
+          <ShowItems />
+        </>
+      ) : (
+        <>
+           <EmailVerification />
+        </>
+       
+      )}
     </>
   );
 }

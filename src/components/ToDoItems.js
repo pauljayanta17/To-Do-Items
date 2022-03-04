@@ -7,10 +7,10 @@ function ToDoItems(props) {
   const [background, setbackground] = useState("rgb(104, 68, 182)");
   //Get random color for list
   useEffect(() => {
-    var items = Array("#1148AF", "#075B37", "#2A2081", "#5C2081", "#815320");
+    var items = ["#1148AF", "#075B37", "#2A2081", "#5C2081", "#815320"];
     var item = items[Math.floor(Math.random() * items.length)];
     setbackground(item);
-  }, []);
+  },[background]);
 
   return (
     <>

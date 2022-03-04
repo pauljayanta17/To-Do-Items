@@ -1,5 +1,4 @@
 import React from "react";
-import validator from "validator";
 import { Link, Navigate } from "react-router-dom";
 import PasswordKeyIcon from "../components/Icons/PasswordKeyIcon";
 import GoogleSigninSVGIcons from "../components/Icons/GoogleSigninSVGIcons";
@@ -14,7 +13,8 @@ import {
   passwordStore,
   loginAuthentication,
   togglePassword,
-  loginError
+  loginError,
+  googleLogin,
 } from "../app/loginhandle";
 import { useSelector } from "react-redux";
 function LoginPage() {
@@ -27,19 +27,15 @@ function LoginPage() {
   const isShowPassword = useSelector((state) => state.loginHandle.showPassword);
 
   const handleSignIn = async () => {
-    if (
-      email !== "" &&
-      password !== "" &&  
-      validator.isEmail(email) &&
-      validator.isStrongPassword(password)
-    ) {
+    if (email !== "" && password !== "") {
       dispatch(loginAuthentication({ email, password }));
-      dispatch(emailStore(""));
-      dispatch(passwordStore(""));
+    } else {
+      dispatch(loginError("Email and password can not be empty"));
     }
-    else{
-      dispatch(loginError("Something went wrong"))
-    }
+  };
+
+  const handleGoogleSignin = () => {
+    dispatch(googleLogin())
   };
 
   const togglePasswordHandle = () => {
@@ -133,7 +129,6 @@ function LoginPage() {
           </button>
         )}
 
-       
         <Link to="/forgotpassword" className="link-success my-2">
           <label htmlFor="forgotpassword" style={{ cursor: "pointer" }}>
             <strong>Forgot Password ?</strong>
@@ -141,11 +136,16 @@ function LoginPage() {
         </Link>
 
         <label htmlFor="ordivider">OR</label>
-        <Link to="/googlesignin">
-          <GoogleSigninSVGIcons></GoogleSigninSVGIcons>
-        </Link>
+       <div className="text-center my-2">
+       <GoogleSigninSVGIcons onclick={handleGoogleSignin} />
+       </div>
 
-        <h6 className="conatiner text-danger text-center" style={{height:"1rem"}}>{errorMsg}</h6>
+        <h6
+          className="conatiner text-danger text-center"
+          style={{ height: "1rem" }}
+        >
+          {errorMsg}
+        </h6>
         {/* </div> */}
       </div>
     </div>

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../utils/Firebase-Config";
 
 //Add items to database function
@@ -30,7 +30,7 @@ export const addItemsTodatabase = createAsyncThunk(
           time: items.settime,
         })
       );
-     
+
       return "Success";
     } catch (error) {
       // console.log("Error", error);
@@ -39,13 +39,26 @@ export const addItemsTodatabase = createAsyncThunk(
   }
 );
 
+export const updateIitemsTodatabase = createAsyncThunk(
+  "addItemsHandle/updateIitemsTodatabase",
+  async (items) => {
+    try {
+      const updateItems = doc(db, items.email, items.idtemp);
+      await updateDoc(updateItems, {
+        complete: "complete",
+      });
+    } catch (error) {
+      console.log(error.code);
+    }
+  }
+);
 
 //Defining initialState for the reducers
 const initialState = {
   title: "",
   comment: "",
   date: "yyyy-MM-dd",
-  time:"hh:mm",
+  time: "hh:mm",
   dateError: "white",
   titleError: "white",
   commentError: "white",
@@ -83,7 +96,7 @@ const addItemsHandle = createSlice({
     },
   },
 
-  //extraReducers for asynchronous functon 
+  //extraReducers for asynchronous functon
   extraReducers(builder) {
     builder //pending the writting process
       .addCase(addItemsTodatabase.pending, (state, action) => {
@@ -101,7 +114,7 @@ const addItemsHandle = createSlice({
           state.commentError = "white";
           state.dateError = "white";
         }
-      });
+      })
   },
 });
 

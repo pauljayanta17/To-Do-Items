@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ToDoItems from "./ToDoItems";
 import {
   deleteItem,
   deleteAllItem,
   getAllItemsFromDatabase,
-  getAllItemsFromLocalStorage,
 } from "../app/showItemsHandle";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -15,56 +14,56 @@ function ShowItems() {
   const alldata = useSelector((state) => state.showItemsHandle.data);
   const userEmail = useSelector((state) => state.loginHandle.userEmail);
 
-  useEffect(() => {
+  // useEffect(() => {
     
-    const intervalID = setInterval(() => {
-      let dateTime = Date();
-      // let update = dateTime.slice(16,24);
-      dispatch(getAllItemsFromLocalStorage());
-      let arr = [];
-      var length = window.localStorage.length;
-      for (let i = 0; i < length; i++) {
-        // console.log(window.localStorage.getItem(window.localStorage.key(i)));
-        // console.log(JSON.parse(window.localStorage.getItem(localStorage.key(i))))
-        arr.push(
-          JSON.parse(window.localStorage.getItem(window.localStorage.key(i)))
-        );
-        // console.log(state.data)
-      }
-      // console.log(notiComplete)
+  //   const intervalID = setInterval(() => {
+  //     let dateTime = Date();
+  //     // let update = dateTime.slice(16,24);
+  //     dispatch(getAllItemsFromLocalStorage());
+  //     let arr = [];
+  //     var length = window.localStorage.length;
+  //     for (let i = 0; i < length; i++) {
+  //       // console.log(window.localStorage.getItem(window.localStorage.key(i)));
+  //       // console.log(JSON.parse(window.localStorage.getItem(localStorage.key(i))))
+  //       arr.push(
+  //         JSON.parse(window.localStorage.getItem(window.localStorage.key(i)))
+  //       );
+  //       // console.log(state.data)
+  //     }
+  //     // console.log(notiComplete)
 
-      arr.forEach((element) => {
-        // console.log(element.time)
-        let t = element.time;
-        let check = dateTime.slice(16, 24);
-        // console.log(check)
-        if (t === check ) {
-          // window.localStorage.removeItem(element.id)
-          window.localStorage.setItem(
-            element.id,
-            JSON.stringify({
-              id: element.id,
-              title: element.title,
-              comment: element.comment,
-              date: element.date,
-              time: element.time,
-              complete:"complete"
-            })
-          );
-          new Notification(element.title, {
-            body: element.comment,
-            tag:"Complete",
-            icon: "https://cdn4.iconfinder.com/data/icons/generic-interaction/143/yes-tick-success-done-complete-check-allow-512.png",
-          });
-        }
-      });
-      // console.log("interval")
-    }, 1000);
+  //     arr.forEach((element) => {
+  //       // console.log(element.time)
+  //       let t = element.time;
+  //       let check = dateTime.slice(16, 24);
+  //       // console.log(check)
+  //       if (t === check ) {
+  //         // window.localStorage.removeItem(element.id)
+  //         window.localStorage.setItem(
+  //           element.id,
+  //           JSON.stringify({
+  //             id: element.id,
+  //             title: element.title,
+  //             comment: element.comment,
+  //             date: element.date,
+  //             time: element.time,
+  //             complete:"complete"
+  //           })
+  //         );
+  //         new Notification(element.title, {
+  //           body: element.comment,
+  //           tag:"Complete",
+  //           icon: "https://cdn4.iconfinder.com/data/icons/generic-interaction/143/yes-tick-success-done-complete-check-allow-512.png",
+  //         });
+  //       }
+  //     });
+  //     // console.log("interval")
+  //   }, 1000);
 
-    return () => {
-      clearInterval(intervalID);
-    };
-  }, []);
+  //   return () => {
+  //     clearInterval(intervalID);
+  //   };
+  // }, []);
 
   const handlegetDocument = () => {
     dispatch(getAllItemsFromDatabase(userEmail));

@@ -23,19 +23,19 @@ export default function AboutUs() {
             alt="..."
           />
           <div className="card-body">
-            <p className="card-text">
+            <div className="card-text">
               <b>Developed By</b>{" "}
-              <h3 className="text-primary" style={{ fontFamily: "serif" }}>
+              <div className="text-primary" style={{ fontFamily: "serif" }}>
                 <a
                   href="https://github.com/pauljayanta17"
                   target="_blank"
                   rel="noreferrer"
-                  class="link-primary"
+                  className="link-primary"
                 >
                   Cool Coder
                 </a>
-              </h3>
-            </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>

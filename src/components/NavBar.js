@@ -3,14 +3,18 @@ import { Link } from "react-router-dom";
 import HomeIcon from "../components/Icons/HomeIcon";
 import { authApp } from "../utils/Firebase-Config";
 import { useDispatch, useSelector } from "react-redux";
-import { login, setUserEmail, logOut } from "../app/loginhandle";
+import {
+  login,
+  setUserEmail,
+  logOut,
+} from "../app/loginhandle";
 import Spinner from "./Spinner";
 
 function NavBar() {
+  const dispatch = useDispatch();
   const signin = useSelector((state) => state.loginHandle.signin);
   const loading = useSelector((state) => state.loginHandle.loading);
 
-  const dispatch = useDispatch();
   useEffect(() => {
     authApp.onAuthStateChanged((user) => {
       if (user) {
@@ -21,11 +25,11 @@ function NavBar() {
         dispatch(setUserEmail(""));
       }
     });
-  }, []);
+  
+  });
 
   const handleLogOut = async () => {
     dispatch(logOut());
-    window.localStorage.clear()
   };
 
   return (
