@@ -7,6 +7,7 @@ import {
   login,
   setUserEmail,
   logOut,
+  setDisplayName,
 } from "../app/loginhandle";
 import Spinner from "./Spinner";
 
@@ -19,6 +20,7 @@ function NavBar() {
     authApp.onAuthStateChanged((user) => {
       if (user) {
         dispatch(setUserEmail(user.email));
+        dispatch(setDisplayName(user.displayName))
         dispatch(login(true));
       } else {
         dispatch(login(false));
@@ -54,14 +56,14 @@ function NavBar() {
           <ul className="navbar-nav me-auto mb-2 mb-lg-0">
             <li className="nav-item">
               <Link className="nav-link active" aria-current="page" to="/about">
-                About
+                About Me
               </Link>
             </li>
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <Link className="nav-link active" to="/contactus">
                 Contact
               </Link>
-            </li>
+            </li> */}
           </ul>
           {!signin ? (
             <>

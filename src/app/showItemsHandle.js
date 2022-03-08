@@ -70,7 +70,7 @@ export const deleteAllItem = createAsyncThunk(
       })
       window.localStorage.clear();
     } catch (error) {
-      console.log(error.message);
+      // console.log(error.message);
     }
   }
 );

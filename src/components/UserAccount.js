@@ -90,13 +90,13 @@ function UserAccount() {
       return <Navigate to="/login" />;
     }
   };
+  
 
   return (
     <>
       {renderRedirect()}
       {emailVerified ? (
         <>
-          {" "}
           <Additems
             loading={loading}
             title={title}
@@ -108,6 +108,7 @@ function UserAccount() {
             handleDateChanged={handleDateChanged}
           />
           <ShowItems />
+          
         </>
       ) : (
         <>

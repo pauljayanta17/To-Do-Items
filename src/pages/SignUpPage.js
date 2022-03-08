@@ -52,7 +52,7 @@ function SignUpPage() {
       mobileno.length === 10 &&
       fullname !== ""
     ) {
-      dispatch(signUpAuth({ email, password }));
+      dispatch(signUpAuth({ email, password,fullname }));
     } else {
       dispatch(errorMsgStore("Enter valid Inputes"));
     }

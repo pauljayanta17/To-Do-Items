@@ -102,9 +102,9 @@ function ShowItems() {
       </div>
       {/* When data is not available then show this componenet */}
       {alldata.length === 0 && (
-        <div className="conatiner fs-5 text-center text-danger">
+        <div className="conatiner fs-4 text-center text-danger">
           <b>
-            Nothing to show
+            No items 😢😢😢😢
           </b>
         </div>
       )}

@@ -48,7 +48,7 @@ export const updateIitemsTodatabase = createAsyncThunk(
         complete: "complete",
       });
     } catch (error) {
-      console.log(error.code);
+      // console.log(error.code);
     }
   }
 );

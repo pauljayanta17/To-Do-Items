@@ -12,7 +12,7 @@ import { authApp, provider } from "../utils/Firebase-Config";
 export const loginAuthentication = createAsyncThunk(
   "loginHandle/loginAuthentication",
   async (e) => {
-    let res;
+    let res,name;
     if (authApp.currentUser === null)
       try {
         //Signin to user account
@@ -28,10 +28,16 @@ export const loginAuthentication = createAsyncThunk(
             if ("Notification" in window) {
               Notification.requestPermission();
             }
+            if(authApp.currentUser){
+              caches.open('v1').then((cache)=>{
+                return cache.addAll([authApp.currentUser.email])
+              })
+            }
             res = response.user.uid;
+            name = response.user.displayName
           }
         );
-        return { userId: res };
+        return { userId: res ,userName : name};
       } catch (e) {
         // console.log("Response error ", e);
         return e.code;
@@ -53,16 +59,17 @@ export const googleLogin = createAsyncThunk(
     // console.log(email);
   if(authApp.currentUser===null)
     try {
-      let userId;
+      let userId,name;
       await signInWithRedirect(authApp,provider).then((result) => {
           // const credential = GoogleAuthProvider.credential(result);
           // const token = credential.accessToken;
           userId = result.user.uid
+          name = result.user.displayName
           // console.log(user)
       })
-      return {id:userId}
+      return {id:userId,userName:name}
     } catch (error) {
-      console.log(error.code)
+      // console.log(error.code)
       return error.code;
     }
     else{
@@ -80,7 +87,7 @@ export const resetPassword = createAsyncThunk(
     // console.log(email);
     try {
       await sendPasswordResetEmail(authApp, email).then(() => {
-        console.log(`Password reset link is sent to ${email} address`);
+        // console.log(`Password reset link is sent to ${email} address`);
       });
       return "success";
     } catch (error) {
@@ -124,7 +131,8 @@ const initialState = {
   signin: false,
   showPassword: false,
   userEmail: "",
-  emailVerified:false
+  emailVerified:false,
+  displayName:""
 };
 
 const loginHandle = createSlice({
@@ -152,6 +160,9 @@ const loginHandle = createSlice({
     },
     checkEmailVerified:(state,action)=>{
       state.emailVerified = action.payload
+    },
+    setDisplayName:(state,action)=>{
+      state.displayName = action.payload
     }
   },
   extraReducers(builder) {
@@ -164,11 +175,12 @@ const loginHandle = createSlice({
         state.loading = false;
         if (action.payload === "Signin") {
           state.errorMsg = "Already Sign in";
-        } else if (action.payload.userId) {
+        }else if (action.payload.userId) {
           state.errorMsg = "";
           state.email = "";
           state.password = "";
-        } else if (action.payload === "auth/invalid-email") {
+        }
+        else if (action.payload === "auth/invalid-email") {
           state.errorMsg = "Email is not valid";
         } else if (action.payload === "auth/wrong-password") {
           state.errorMsg = "Password is incorrect";
@@ -183,11 +195,22 @@ const loginHandle = createSlice({
           state.errorMsg = "Something went wrong";
         }
       })
+      .addCase(googleLogin.pending,(state,action)=>{
+        state.loading = true
+        state.errorMsg = "Please wait"
+      })
+      .addCase(googleLogin.fulfilled,(state,action)=>{
+        state.loading = false
+        if(action.payload.userName){
+          state.displayName = action.payload.userName
+        }
+      })
       .addCase(logOut.pending, (state, action) => {
         state.loading = true;
       })
       .addCase(logOut.fulfilled, (state, action) => {
         state.loading = false;
+        state.errorMsg = "Logout Successfully"
       })
       .addCase(resetPassword.pending, (state, action) => {
         state.loading = true;
@@ -232,7 +255,8 @@ export const {
   togglePassword,
   setUserEmail,
   loginError,
-  checkEmailVerified
+  checkEmailVerified,
+  setDisplayName
 } = loginHandle.actions;
 
 export default loginHandle.reducer;

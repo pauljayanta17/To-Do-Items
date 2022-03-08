@@ -9,9 +9,11 @@ function Additems(props) {
   const dateError = useSelector((state) => state.addItemsHandle.dateError);
   const date = useSelector((state) => state.addItemsHandle.date);
   const time = useSelector((state) => state.addItemsHandle.time);
-
+  const name = useSelector((state) => state.loginHandle.displayName);
+  // console.log(name)
   return (
     <>
+    <div className="container text-center text-warning fs-4">Welcome Back 😃 {name.split(" ")[0]}</div>
       <form>
         <div className="container my-2 d-flex flex-column align-items-start">
           {/* Title Label Here */}
